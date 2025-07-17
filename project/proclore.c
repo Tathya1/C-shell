@@ -27,27 +27,21 @@
 
     FILE *file;
     int foreground_group_id;
-    // Set up the path to the process' /proc/[pid] directory
     sprintf(proc_path, "/proc/%d", pid);
     
-    // Set up the path to the status file
     sprintf(status_file, "%s/status", proc_path);
     sprintf(stat_file, "%s/stat", proc_path);
 
-    // Open the status file
     file = fopen(status_file, "r");
     if (!file) {
         perror("Could not open status file");
         return;
     }
 
-    // Variables to hold process information
     char process_status[3];
-    // char exec_path[BUFFER_SIZE];
     int process_group = 0;
     unsigned long vsize = 0;
 
-    // Read the status file line by line
     while (fgets(buffer, sizeof(buffer), file)) {
         if (strncmp(buffer, "State:", 6) == 0) {
             sscanf(buffer, "State:\t%s", process_status);
@@ -60,13 +54,12 @@
 
     fclose(file);
 
-    // Get the executable path
     sprintf(exec_path, "%s/exe", proc_path);
     ssize_t len = readlink(exec_path, exec_path, sizeof(exec_path) - 1);
     if (len != -1) {
-        exec_path[len] = '\0'; // Null-terminate the path
+        exec_path[len] = '\0'; 
 
-        // Convert to absolute path
+        
         char absolute_path[4097];
         if (realpath(exec_path, absolute_path) != NULL) {
             strcpy(exec_path, absolute_path);
@@ -86,13 +79,11 @@
         fscanf(file, "%d %s %c %d %d %d %d %d %d", &stat_pid, comm, &state, &ppid, &pgrp, &session, &tty_nr, &tpgid, &foreground_group_id);
         fclose(file);
 
-        // Check if the process is in the foreground
         if (pgrp == tpgid) {
             strcat(process_status, "+");
         }
     }
 
-    // Print the collected information
     printf("pid : %d\n", pid);
     printf("process status : %s\n", process_status);
     printf("Process Group : %d\n", process_group);
@@ -103,10 +94,8 @@ void handle_proclore(char *args[]) {
     int pid;
 
     if (args[1] == NULL) {
-        // No argument provided, print information for the shell itself
         pid = getpid();
     } else {
-        // Argument provided, print information for the specified process
         pid = atoi(args[1]);
     }
 

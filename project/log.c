@@ -140,49 +140,32 @@ void do_log(char *args[], char *current_dir, char *home_dir, char *prev_dir, cha
                 return;
             }
             strcpy(temp, read_log(log, &pos));
-            // if(temp!=NULL)
-            // system(temp);
             store_in_log(temp);
 
             char commands1[max_comm_size][max_comm_size][max_comm_size];
             int rows1, cols1[max_comm_size];
-            // int bg_flags[max_comm_size][max_comm_size];
             int **bg_flags1 = (int **)malloc(max_comm_size * sizeof(int *));
 
-            // Check if the memory allocation was successful
             if (bg_flags1 == NULL)
             {
                 perror("Failed to allocate memory for bg_flags1");
                 exit(EXIT_FAILURE);
             }
 
-            // Allocate memory for each row
             for (int i = 0; i < max_comm_size; i++)
             {
                 bg_flags1[i] = (int *)malloc(max_comm_size * sizeof(int));
 
-                // Check if the memory allocation for each row was successful
                 if (bg_flags1[i] == NULL)
                 {
                     perror("Failed to allocate memory for bg_flags1 row");
                     exit(EXIT_FAILURE);
                 }
             }
-            // char *args1[max_comm_size];
 
-            sep_input(temp, commands1, &rows1, cols1, bg_flags1);
+            sep_input(temp, commands1, &rows1, cols1, bg_flags1,args,home_dir,prev_dir,relative_dir,current_dir);
 
-            for (int i = 0; i < rows1; i++)
-            {
-                // printf("Command Group %d:\n", i + 1);
-                for (int j = 0; j < cols1[i]; j++)
-                {
-                    // printf("%s %d\n", commands[i][j], bg_flags[i][j]);
 
-                    // printf("%s\n",relative_dir);
-                    handle_custom_command(commands1[i][j], args, current_dir, home_dir, prev_dir, relative_dir, bg_flags1[i][j]);
-                }
-            }
             for (int i = 0; i < max_comm_size; i++)
             {
                 free(bg_flags1[i]);
