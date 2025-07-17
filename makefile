@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -g
 
 # Source files
-SRCS = project/main.c project/split.c project/log.c project/process.c project/hop.c project/reveal.c project/proclore.c project/seek.c project/act.c project/fgbg.c project/io.c project/neonate.c project/signals.c project/man.c
+SRCS = partb/main.c partb/split.c partb/log.c partb/process.c partb/hop.c partb/reveal.c partb/proclore.c partb/seek.c partb/act.c partb/fgbg.c partb/io.c partb/neonate.c partb/signals.c partb/man.c
 
 # Object files (replace .c with .o in the SRCS list)
 OBJS = $(SRCS:.c=.o)
