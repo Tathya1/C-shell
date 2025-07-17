@@ -4,7 +4,7 @@ This project is a custom shell implementation in C. The shell supports basic com
 
 ## Features
 
-- **Custom Commands**: Implemented custom commands like `hop`, `reveal`, `log`, `seek`, `proclore`.
+- **Custom Commands**: Implemented custom commands like `hop`, `reveal`, `log`, `seek`, `proclore`,`alias`,`activities`,`ping`,`fg`,`bg`,`neonate`,`iMan`
 - **Directory Traversal**: Easily navigate directories with custom commands.
 - **Process Management**: Manage processes with custom and built-in commands.
 - **Signal Handling**: Handles signals to manage processes and cleanup resources.
@@ -20,6 +20,14 @@ This project is a custom shell implementation in C. The shell supports basic com
 - `reveal.c`: Implements the `reveal` command for listing files and directories.
 - `proclore.c`: Implements process-related commands.
 - `seek.c`: Implements the `seek` command for file and directory search.
+- `alias.c`: Implements the `alias` command for creating and managing aliases.
+- `activities.c`: Implements the `activities` command for displaying recent commands.
+- `ping.c`: Implements the `ping` command for network connectivity testing.
+- `fg.c`: Implements the `fg` command for foreground process management.
+- `bg.c`: Implements the `bg` command for background process management.
+- `neonate.c`: Implements the `neonate` command for process printing periodically.
+- `iMan.c`: Implements the  `iMan` function for printing man pages from internet using sockets.
+
 
 ## Limitations and Assumptions
 
@@ -31,6 +39,27 @@ The shell implementation makes certain assumptions and has specific limitations 
   - `BUFFER_SIZE = 1024`: Buffer size for input and output operations.
   - `concatenated_commands[256 * 100]`: Buffer for storing concatenated commands.
   - `log_path[MAX_SIZE]`: Buffer for storing the log file path.
+
+
+
+- Commands with '&' and '|' consecutively will not work.
+
+- Tokenising is done first with '|' and then with '&'.
+  
+- Aliases are stored in log files.
+
+- Aliases have to be written with a space before and after =.
+
+- If 'sleep 100' entered and sent to background and stopped. And if fg is called for it(using its pid) then it will run for less than 100 secs.
+
+- Double quotes function will not work in execvp.
+
+- If there are two | one after another with no spaces then the command till '||' will run and command in right of '||' will be ignored. But if two | have space between them then it is invalid command.
+
+- If theres | in the start or end it is invalid command.
+
+- If command is 'wc < a.txt > b.txt > new.txt' then wc will read from a.txt and print it in b.txt. Basically wc will take input or give output to file after first >(>> also) or <.
+
 
 - **Logging**:
   - `no_of_logs = 15`: Maximum number of logs stored in memory.
@@ -70,4 +99,3 @@ Alternatively, you can directly run the executable
 To remove the compiled files and the executable, run
 make clean
 ```
-
